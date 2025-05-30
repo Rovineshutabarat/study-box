@@ -1,12 +1,12 @@
 package com.study.box.server.handler;
 
+import com.study.box.server.models.exception.AuthException;
 import com.study.box.server.models.exception.ResourceNotFoundException;
 import com.study.box.server.models.payload.response.common.ErrorResponse;
 import com.study.box.server.models.payload.response.common.ValidationErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,12 +30,12 @@ public class GlobalExceptionHandler {
         return ResponseHandler.createValidationErrorResponse(request, exception);
     }
 
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<ErrorResponse> handleTypeMismatch(HttpServletRequest request, HttpMessageNotReadableException exception) {
-//        return ResponseHandler.createErrorResponse(
-//                request,
-//                HttpStatus.BAD_REQUEST,
-//                exception.getMessage());
-//    }
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(HttpServletRequest request, AuthException exception) {
+        return ResponseHandler.createErrorResponse(
+                request,
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage());
+    }
 
 }

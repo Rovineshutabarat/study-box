@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.study.box.server.models.anotations.EnumValue;
 import com.study.box.server.models.enums.ImageFormat;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,8 @@ import org.hibernate.validator.constraints.URL;
 public class Image extends BaseEntity {
     @NotBlank(message = "image name cannot be blank.")
     @Size(min = 5, message = "image name must be at least 5 character.")
-    @Column(unique = true, nullable = false, length = 50)
+    @Size(max = 50, message = "image name must be at most 50 character.")
+    @Column(nullable = false, length = 50)
     private String name;
 
     @URL
