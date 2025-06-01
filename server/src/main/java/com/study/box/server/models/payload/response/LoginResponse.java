@@ -15,5 +15,6 @@ public class LoginResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private Boolean isVerified;
     private String accessToken;
 }

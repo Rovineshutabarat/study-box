@@ -40,6 +40,9 @@ public class User extends BaseEntity implements UserDetails {
     @Valid
     private Image image;
 
+    @Column(nullable = false)
+    private Boolean isVerified = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),

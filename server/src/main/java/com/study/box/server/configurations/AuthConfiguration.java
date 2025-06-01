@@ -13,6 +13,7 @@ public class AuthConfiguration {
     private final Long refreshTokenExpiration;
     private final String refreshTokenCookieName;
     private final String refreshTokenExpirationCookieName;
+    private final Long otpExpiration;
 
     public AuthConfiguration(
             @Value("${jwt.secret.key}") String jwtSecretKey,
@@ -20,12 +21,14 @@ public class AuthConfiguration {
             @Value("${jwt.bearer.token.prefix}") String bearerTokenPrefix,
             @Value("${jwt.refresh.token.expiration}") Long refreshTokenExpiration,
             @Value("${jwt.refresh.token.cookie.name}") String refreshTokenCookieName,
-            @Value("${jwt.refresh.token.expiration.cookie.name}") String refreshTokenExpirationCookieName) {
+            @Value("${jwt.refresh.token.expiration.cookie.name}") String refreshTokenExpirationCookieName,
+            @Value("${otp.expiration}") Long otpExpiration) {
         this.jwtSecretKey = jwtSecretKey;
         this.accessTokenExpiration = accessTokenExpiration;
         this.bearerTokenPrefix = bearerTokenPrefix;
         this.refreshTokenExpiration = refreshTokenExpiration;
         this.refreshTokenCookieName = refreshTokenCookieName;
         this.refreshTokenExpirationCookieName = refreshTokenExpirationCookieName;
+        this.otpExpiration = otpExpiration;
     }
 }

@@ -42,12 +42,14 @@ public class AuthServiceImpl implements AuthService {
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .roles(roles)
+                .isVerified(false)
                 .build());
 
         return RegisterResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles().stream().map(Role::getName).toList())
+                .isVerified(user.getIsVerified())
                 .build();
     }
 
@@ -56,6 +58,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
                 () -> new AuthException("User was not found.")
         );
+
+        if (!user.getIsVerified()) {
+            throw new AuthException("User is not verified.");
+        }
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getEmail(),
@@ -68,6 +74,7 @@ public class AuthServiceImpl implements AuthService {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles().stream().map(Role::getName).toList())
+                .isVerified(user.getIsVerified())
                 .accessToken(accessToken)
                 .build();
     }
