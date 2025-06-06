@@ -36,7 +36,7 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
 
         // Invalidate previous otp
         oneTimePasswordRepository.findByUser(user).ifPresent(otp -> {
-            otp.setValid(false);
+            otp.setAvailable(false);
             oneTimePasswordRepository.save(otp);
         });
 
@@ -49,7 +49,7 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
 
         return oneTimePasswordRepository.save(OneTimePassword.builder()
                 .code(code)
-                .isValid(true)
+                .isAvailable(true)
                 .user(user)
                 .expiredAt(new Date(System.currentTimeMillis() + (authConfiguration.getOtpExpiration() * 5))) // 5 Minutes
                 .build());
@@ -72,7 +72,7 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
     @Override
     public OneTimePassword verifyOneTimePassword(OneTimePasswordRequest oneTimePasswordRequest) {
         OneTimePassword oneTimePassword = findByCode(oneTimePasswordRequest.getCode());
-        if (!oneTimePassword.isValid()) {
+        if (!oneTimePassword.isAvailable()) {
             throw new AuthException("One time password is invalid.");
         }
         if (oneTimePassword.getExpiredAt().before(new Date())) {
@@ -82,7 +82,7 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
         user.setIsVerified(true);
         userRepository.save(user);
 
-        oneTimePassword.setValid(false);
+        oneTimePassword.setAvailable(false);
         oneTimePasswordRepository.save(oneTimePassword);
 
         return oneTimePassword;

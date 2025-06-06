@@ -1,6 +1,5 @@
 package com.study.box.server.filter;
 
-import com.study.box.server.configurations.AuthConfiguration;
 import com.study.box.server.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Configuration
@@ -27,7 +27,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final AuthConfiguration authConfiguration;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -75,4 +74,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+    @Override
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        List<String> publicPath = List.of(
+                "/api/auth/login",
+                "/api/auth/register",
+                "/api/auth/send-otp",
+                "/api/auth/verify-otp"
+        );
+        
+        return publicPath.stream().anyMatch(path::startsWith);
+    }
 }
+

@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/your_database_name
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: false
+        format_sql: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email
+    password: your_16_digit_app_password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 4000
+  servlet:
+    context-path: /api
+
+cloudinary:
+  cloud:
+    name: your_cloudinary_cloud_name
+  api:
+    key: your_cloudinary_api_key
+    secret: your_cloudinary_api_secret
+
+jwt:
+  secret:
+    key: your_jwt_secret
+  access:
+    token:
+      expiration: 60000
+  refresh:
+    token:
+      expiration: 3600000
+      cookie:
+        name: __refresh_token
+        expiration:
+          cookie:
+            name: __refresh_token_expiration
+  bearer:
+    token:
+      prefix: Bearer
+
+otp:
+  expiration: 60000
+ 

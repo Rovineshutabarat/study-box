@@ -18,18 +18,18 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "one_time_passwords")
+@Table(name = "refresh_tokens")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class OneTimePassword extends BaseEntity {
-    @Column(nullable = false, unique = true, length = 6)
-    private String code;
+public class RefreshToken extends BaseEntity {
+    @Column(nullable = false, unique = true, length = 64)
+    private String token;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @Column(nullable = false)
-    private boolean isAvailable = true;
+    private Boolean isAvailable = true;
 
     @Column(nullable = false)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", timezone = "Asia/Jakarta")
