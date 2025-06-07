@@ -8,13 +8,9 @@ import java.util.List;
 public interface CourseService {
     List<Course> findAll();
 
-    Course findById(Integer id);
-
     Course create(CourseRequest courseRequest);
 
     Course update(Integer id, CourseRequest courseRequest);
-
-    Course delete(Integer id);
 
     Boolean canModifyCourse(Integer courseId);
 }

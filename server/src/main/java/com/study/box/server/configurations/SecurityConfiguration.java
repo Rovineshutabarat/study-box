@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/category/**").permitAll()
+                        .requestMatchers("/module/**").permitAll()
+                        .requestMatchers("/resource/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/course/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

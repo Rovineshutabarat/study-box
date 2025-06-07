@@ -6,7 +6,7 @@ import com.study.box.server.handler.ResponseHandler;
 import com.study.box.server.models.entity.Course;
 import com.study.box.server.models.payload.request.CourseRequest;
 import com.study.box.server.models.payload.response.common.SuccessResponse;
-import com.study.box.server.service.CourseService;
+import com.study.box.server.service.implementations.CourseServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/course")
 @AllArgsConstructor
 public class CourseControllerImpl implements CourseController, BaseController<Course, Integer> {
-    private final CourseService courseService;
+    private final CourseServiceImpl courseService;
 
     @Override
     @GetMapping
@@ -51,7 +51,7 @@ public class CourseControllerImpl implements CourseController, BaseController<Co
                 courseService.create(courseRequest)
         );
     }
- 
+
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("@courseServiceImpl.canModifyCourse(#id)")

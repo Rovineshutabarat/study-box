@@ -27,11 +27,11 @@ public class CourseRequest {
     @Size(min = 10, message = "course description must be at least 10 characters long.")
     private String description;
 
-    @NotNull
+    @NotNull(message = "course category id must not be null.")
     private Integer categoryId;
 
-    @NotNull
-    @PositiveOrZero
+    @NotNull(message = "course price must not be null.")
+    @PositiveOrZero(message = "course price must be greater than or equal to zero.")
     private Double price;
 
     @Valid

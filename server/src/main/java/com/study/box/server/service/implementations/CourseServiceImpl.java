@@ -7,6 +7,7 @@ import com.study.box.server.models.exception.ResourceNotFoundException;
 import com.study.box.server.models.payload.request.CourseRequest;
 import com.study.box.server.repositories.CourseRepository;
 import com.study.box.server.repositories.UserRepository;
+import com.study.box.server.service.BaseService;
 import com.study.box.server.service.CourseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class CourseServiceImpl implements CourseService {
+public class CourseServiceImpl implements CourseService, BaseService<Course, Integer> {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final CategoryServiceImpl categoryService;
