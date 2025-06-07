@@ -51,7 +51,7 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
                 .code(code)
                 .isAvailable(true)
                 .user(user)
-                .expiredAt(new Date(System.currentTimeMillis() + (authConfiguration.getOtpExpiration() * 5))) // 5 Minutes
+                .expiredAt(new Date(System.currentTimeMillis() + authConfiguration.getOtpExpiration().toMillis())) // 5 Minutes
                 .build());
     }
 

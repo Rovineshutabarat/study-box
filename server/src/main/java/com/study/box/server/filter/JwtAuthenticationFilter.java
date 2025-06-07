@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/api/auth/send-otp",
                 "/api/auth/verify-otp"
         );
-        
+
         return publicPath.stream().anyMatch(path::startsWith);
     }
 }

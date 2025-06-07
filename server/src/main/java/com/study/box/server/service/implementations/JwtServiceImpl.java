@@ -54,7 +54,7 @@ public class JwtServiceImpl implements JwtService {
                 .setClaims(claims)
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (authConfiguration.getAccessTokenExpiration() * 5))) // 5 Minutes
+                .setExpiration(new Date(System.currentTimeMillis() + authConfiguration.getJwtAccessTokenExpiration().toMillis())) // 5 Minutes
                 .signWith(getPrivateKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

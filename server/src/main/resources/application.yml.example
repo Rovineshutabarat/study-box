@@ -38,23 +38,9 @@ cloudinary:
     key: your_cloudinary_api_key
     secret: your_cloudinary_api_secret
 
-jwt:
-  secret:
-    key: your_jwt_secret
-  access:
-    token:
-      expiration: 60000
-  refresh:
-    token:
-      expiration: 3600000
-      cookie:
-        name: __refresh_token
-        expiration:
-          cookie:
-            name: __refresh_token_expiration
-  bearer:
-    token:
-      prefix: Bearer
+auth:
+  jwtSecretKey: your_jwt_secret_key
+  jwtAccessTokenExpiration: 5m
+  refreshTokenExpiration: 7d
+  otpExpiration: 5m
 
-otp:
-  expiration: 60000
