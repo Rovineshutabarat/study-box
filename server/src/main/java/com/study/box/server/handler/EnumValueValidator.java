@@ -19,7 +19,7 @@ public class EnumValueValidator implements ConstraintValidator<EnumValue, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) return true; // @NotNull validasi terpisah
+        if (value == null) return true;
         for (String acceptedValue : acceptedValues) {
             if (acceptedValue.equals(value)) return true;
         }
