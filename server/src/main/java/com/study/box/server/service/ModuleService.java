@@ -11,4 +11,6 @@ public interface ModuleService {
     Module createModule(ModuleRequest moduleRequest);
 
     Module updateModule(Integer id, ModuleRequest moduleRequest);
+
+    Boolean canModifyModule(Integer moduleId);
 }

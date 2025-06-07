@@ -2,12 +2,15 @@ package com.study.box.server.service.implementations;
 
 import com.study.box.server.models.entity.Course;
 import com.study.box.server.models.entity.Module;
+import com.study.box.server.models.entity.User;
 import com.study.box.server.models.exception.ResourceNotFoundException;
 import com.study.box.server.models.payload.request.ModuleRequest;
 import com.study.box.server.repositories.ModuleRepository;
 import com.study.box.server.service.BaseService;
 import com.study.box.server.service.ModuleService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +63,13 @@ public class ModuleServiceImpl implements ModuleService, BaseService<Module, Int
         Module module = findById(integer);
         moduleRepository.delete(module);
         return module;
+    }
+
+    @Override
+    public Boolean canModifyModule(Integer moduleId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Module module = findById(moduleId);
+        return module.getCourse().getInstructor().getEmail().equals(user.getEmail());
     }
 }

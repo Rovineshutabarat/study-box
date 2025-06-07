@@ -7,4 +7,6 @@ public interface ResourceService {
     Resource createResource(ResourceRequest resourceRequest);
 
     Resource updateResource(Integer id, ResourceRequest resourceRequest);
+
+    Boolean canModifyResource(Integer resourceId);
 }
