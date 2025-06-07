@@ -6,13 +6,17 @@ import com.study.box.server.models.entity.User;
 import com.study.box.server.models.exception.AuthException;
 import com.study.box.server.models.payload.response.RefreshTokenResponse;
 import com.study.box.server.repositories.RefreshTokenRepository;
+import com.study.box.server.service.CookieService;
 import com.study.box.server.service.JwtService;
 import com.study.box.server.service.RefreshTokenService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,6 +26,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthConfiguration authConfiguration;
     private final JwtService jwtService;
+    private final CookieService cookieService;
 
     @Override
     public RefreshToken generateRefreshToken(User user) {
@@ -35,8 +40,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public RefreshTokenResponse refreshToken(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
+    public RefreshTokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        Optional<String> refreshTokenCookie = cookieService.getCookieValue(request, "__refresh_token");
+        if (refreshTokenCookie.isEmpty()) {
+            log.warn("Refresh token cookie was not found.");
+            throw new AuthException("Refresh token cookie was not found.");
+        }
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenCookie.get()).orElseThrow(
                 () -> new AuthException("Refresh token was not found.")
         );
 
@@ -49,6 +60,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         refreshTokenRepository.save(refreshToken);
 
         String accessToken = jwtService.generateAccessToken(refreshToken.getUser());
+
+        cookieService.setCookieValue(response, "__refresh_token", refreshToken.getToken(), authConfiguration.getRefreshTokenExpiration());
+        cookieService.setCookieValue(response, "__refresh_token_expiration", String.valueOf(refreshToken.getExpiredAt().getTime()), authConfiguration.getRefreshTokenExpiration());
 
         return RefreshTokenResponse.builder()
                 .accessToken(accessToken)

@@ -1,8 +1,10 @@
 package com.study.box.server.controllers.implementations;
 
+import com.study.box.server.configurations.AuthConfiguration;
 import com.study.box.server.controllers.AuthController;
 import com.study.box.server.handler.ResponseHandler;
 import com.study.box.server.models.entity.OneTimePassword;
+import com.study.box.server.models.entity.RefreshToken;
 import com.study.box.server.models.payload.request.EmailRequest;
 import com.study.box.server.models.payload.request.LoginRequest;
 import com.study.box.server.models.payload.request.OneTimePasswordRequest;
@@ -11,8 +13,12 @@ import com.study.box.server.models.payload.response.LoginResponse;
 import com.study.box.server.models.payload.response.RegisterResponse;
 import com.study.box.server.models.payload.response.common.SuccessResponse;
 import com.study.box.server.service.AuthService;
+import com.study.box.server.service.CookieService;
 import com.study.box.server.service.OneTimePasswordService;
+import com.study.box.server.service.RefreshTokenService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthControllerImpl implements AuthController {
     private final AuthService authService;
     private final OneTimePasswordService oneTimePasswordService;
+    private final CookieService cookieService;
+    private final AuthConfiguration authConfiguration;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/register")
     @Override
@@ -41,11 +50,18 @@ public class AuthControllerImpl implements AuthController {
 
     @PostMapping("/login")
     @Override
-    public ResponseEntity<SuccessResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<SuccessResponse<LoginResponse>> login(HttpServletResponse response, @RequestBody @Valid LoginRequest loginRequest) {
+        LoginResponse loginResponse = authService.login(loginRequest);
+        RefreshToken refreshToken = refreshTokenService.generateRefreshToken(loginResponse.getUser());
+        cookieService.setCookieValue(response,
+                "__refresh_token",
+                refreshToken.getToken(),
+                authConfiguration.getRefreshTokenExpiration());
+
         return ResponseHandler.createSuccessResponse(
                 HttpStatus.OK,
                 "Success authenticate user",
-                authService.login(loginRequest)
+                loginResponse
         );
     }
 
@@ -67,5 +83,10 @@ public class AuthControllerImpl implements AuthController {
                 "Success verify one time password",
                 oneTimePasswordService.verifyOneTimePassword(oneTimePasswordRequest)
         );
+    }
+
+    @Override
+    public ResponseEntity<SuccessResponse<LoginResponse>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        return null;
     }
 }

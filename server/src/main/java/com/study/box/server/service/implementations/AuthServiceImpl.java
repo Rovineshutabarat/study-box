@@ -72,10 +72,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtService.generateAccessToken(user);
 
         return LoginResponse.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .roles(user.getRoles().stream().map(Role::getName).toList())
-                .isVerified(user.getIsVerified())
+                .user(user)
                 .accessToken(accessToken)
                 .build();
     }

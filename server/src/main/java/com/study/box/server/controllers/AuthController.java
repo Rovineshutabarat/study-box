@@ -9,14 +9,18 @@ import com.study.box.server.models.payload.response.LoginResponse;
 import com.study.box.server.models.payload.response.RegisterResponse;
 import com.study.box.server.models.payload.response.common.SuccessResponse;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthController {
     ResponseEntity<SuccessResponse<RegisterResponse>> register(RegisterRequest registerRequest);
 
-    ResponseEntity<SuccessResponse<LoginResponse>> login(LoginRequest loginRequest);
+    ResponseEntity<SuccessResponse<LoginResponse>> login(HttpServletResponse response, LoginRequest loginRequest);
 
     ResponseEntity<SuccessResponse<Void>> sendOneTimePassword(EmailRequest emailRequest) throws MessagingException;
 
     ResponseEntity<SuccessResponse<OneTimePassword>> verifyOneTimePassword(OneTimePasswordRequest oneTimePasswordRequest);
+
+    ResponseEntity<SuccessResponse<LoginResponse>> refreshToken(HttpServletRequest request, HttpServletResponse response);
 }
