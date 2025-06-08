@@ -10,25 +10,25 @@ import Link from "next/link";
 
 const MainFooter = () => {
   const socials = [
-    { title: "Facebook", icon: FacebookIcon, link: "#" },
-    { title: "Twitter", icon: LucideTwitter, link: "#" },
-    { title: "Instagram", icon: Instagram, link: "#" },
-    { title: "LinkedIn", icon: LinkedinIcon, link: "#" },
+    { title: "Facebook", icon: FacebookIcon, href: "#" },
+    { title: "Twitter", icon: LucideTwitter, href: "#" },
+    { title: "Instagram", icon: Instagram, href: "#" },
+    { title: "LinkedIn", icon: LinkedinIcon, href: "#" },
   ];
 
   const quickLinks = [
-    { title: "Home", link: "/" },
-    { title: "About Us", link: "#" },
-    { title: "Courses", link: "#" },
-    { title: "Contact", link: "#" },
-    { title: "Blog", link: "#" },
+    { title: "Home", href: "/" },
+    { title: "About Us", href: "#" },
+    { title: "Courses", href: "#" },
+    { title: "Contact", href: "#" },
+    { title: "Blog", href: "#" },
   ];
   const learnings = [
-    { title: "Business", link: "#" },
-    { title: "Development", link: "#" },
-    { title: "Marketing", link: "#" },
-    { title: "Design", link: "#" },
-    { title: "Photography", link: "#" },
+    { title: "Business", href: "#" },
+    { title: "Development", href: "#" },
+    { title: "Marketing", href: "#" },
+    { title: "Design", href: "#" },
+    { title: "Photography", href: "#" },
   ];
   return (
     <footer className="pt-20 pb-10 border-t">
@@ -42,7 +42,7 @@ const MainFooter = () => {
             </p>
             <div className="flex space-x-4">
               {socials.map((social, i) => (
-                <Link href={social.link} key={i} passHref={true}>
+                <Link href={social.href} key={i} passHref={true}>
                   <Button
                     key={i}
                     variant="outline"
@@ -62,7 +62,7 @@ const MainFooter = () => {
               {quickLinks.map((quickLink, i) => (
                 <li key={i}>
                   <a
-                    href={quickLink.link}
+                    href={quickLink.href}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {quickLink.title}
@@ -77,7 +77,7 @@ const MainFooter = () => {
               {learnings.map((learning, i) => (
                 <li key={i}>
                   <a
-                    href={learning.link}
+                    href={learning.href}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {learning.title}
