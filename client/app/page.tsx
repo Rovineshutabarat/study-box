@@ -1,17 +1,32 @@
-"use client";
-
-import React from "react"; 
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/hooks/use-theme";
-import { toast } from "sonner";
+import React from "react";
+import MainNavbar from "@/components/features/main/navbar";
+import MainHero from "@/components/features/main/hero";
+import MainFeatures from "@/components/features/main/features";
+import TopCategories from "@/components/features/main/top-categories";
+import TopCourses from "@/components/features/main/top-course";
+import MainAdvantages from "@/components/features/main/advantages";
+import MainNewsLetter from "@/components/features/main/news-letter";
+import MainFooter from "@/components/features/main/footer";
 
 const Page = () => {
-  const { changeTheme } = useTheme();
   return (
-    <div className="flex items-center space-x-2 justify-center">
-      <Button onClick={changeTheme}>Kontl</Button>
-      <Button onClick={() => toast.success("aksdjnkjadsn")}>Kontl</Button>
-    </div>
+    <main className="min-h-screen">
+      <MainNavbar />
+
+      <MainHero />
+
+      <MainFeatures />
+
+      <TopCategories />
+
+      <TopCourses />
+
+      <MainAdvantages />
+
+      <MainNewsLetter />
+
+      <MainFooter />
+    </main>
   );
 };
 

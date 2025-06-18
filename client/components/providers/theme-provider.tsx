@@ -6,24 +6,34 @@ type ThemeProviderProps = {
   children: React.ReactNode;
 };
 
-type ThemeProviderContextState = {
+type ThemeProviderContext = {
   theme: "light" | "dark";
   changeTheme: () => void;
 };
 
-const ThemeProviderContext = React.createContext<
-  ThemeProviderContextState | undefined
+export const ThemeProviderContext = React.createContext<
+  ThemeProviderContext | undefined
 >(undefined);
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [mounted, setMounted] = React.useState(false);
 
-  function changeTheme(): void {
-    const currentTheme: string | null = localStorage.getItem("theme");
-    const updatedTheme: "light" | "dark" =
-      currentTheme === "light" ? "dark" : "light";
-    setTheme(updatedTheme);
+  React.useEffect(() => {
+    const storedTheme =
+      (localStorage.getItem("theme") as "light" | "dark") || "light";
+    setTheme(storedTheme);
+    setMounted(true);
+  }, []);
+
+  function changeTheme() {
+    const updatedTheme = theme === "light" ? "dark" : "light";
     localStorage.setItem("theme", updatedTheme);
+    setTheme(updatedTheme);
+  }
+
+  if (!mounted) {
+    return <body></body>;
   }
 
   return (
@@ -33,4 +43,4 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
   );
 };
 
-export { ThemeProvider, ThemeProviderContext };
+export default ThemeProvider;

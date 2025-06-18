@@ -10,12 +10,12 @@ type AppLayoutProps = {
 const AppLayout = ({ children }: AppLayoutProps) => {
   const { theme } = useTheme();
   return (
-    <body className={theme}>
+    <body className={`${theme}`}>
       <main>{children}</main>
       <Toaster
         visibleToasts={4}
         expand={true}
-        theme={theme}
+        theme={theme as "dark" | "light"}
         richColors={true}
       />
     </body>
